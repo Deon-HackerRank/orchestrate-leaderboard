@@ -4,8 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Orchestrate — Live Leaderboard</title>
-  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700,900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz@1,6..72&display=swap" rel="stylesheet">
+  <style>
+    @font-face { font-family: 'Satoshi'; src: url('assets/fonts/satoshi-300.woff2') format('woff2'); font-weight: 300; font-display: swap; }
+    @font-face { font-family: 'Satoshi'; src: url('assets/fonts/satoshi-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Satoshi'; src: url('assets/fonts/satoshi-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Satoshi'; src: url('assets/fonts/satoshi-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+    @font-face { font-family: 'Satoshi'; src: url('assets/fonts/satoshi-900.woff2') format('woff2'); font-weight: 900; font-display: swap; }
+    @font-face { font-family: 'Newsreader'; src: url('assets/fonts/newsreader-italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+  </style>
   <style>
     :root {
       --green: #2e7d32;
@@ -1184,13 +1190,13 @@
     <!-- Centered video card -->
     <div class="iv-body">
       <div class="iv-video-card">
-        <img src="https://www.figma.com/api/mcp/asset/96215586-74ee-4129-9637-9b4c5dc2a30f" alt="AI Interviewer">
+        <img src="assets/ai-interviewer.jpg" alt="AI Interviewer">
       </div>
     </div>
 
     <!-- Bottom waveform -->
     <div class="iv-waveform">
-      <img src="https://www.figma.com/api/mcp/asset/742033df-7398-4efe-bd67-cb894452d17b" alt="">
+      <img src="assets/waveform.png" alt="">
     </div>
 
     <!-- Controls bar: mic / camera / chat -->
@@ -1521,7 +1527,7 @@
     // ─────────────────────────────────────────────
     function renderPodium() {
       const [first, second, third] = getRankings(5);
-      const TROPHY_BASE = 'https://hrcdn.net/hrc/_next/static/next_assets/hackathon/trophy-';
+      const TROPHY_BASE = 'assets/trophy-';
 
       const card = (p, cls, rank, label) => `
         <div class="podium-card ${cls}">
