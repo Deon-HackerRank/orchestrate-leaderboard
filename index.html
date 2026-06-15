@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orchestrate — Live Leaderboard</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz@1,6..72&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #2e7d32;
+      --green-light: #e8f5e9;
+      --text-primary: #111111;
+      --text-secondary: #555555;
+      --text-tertiary: #737373;
+      --border: #e5e7eb;
+      --bg: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    /* ─────────────────────────────────────────────
+       PANEL 1 — INTERVIEW COMPLETE
+    ───────────────────────────────────────────── */
+    #panel-confirm {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #panel-confirm .confirm-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .confirm-inner {
+      text-align: center;
+      max-width: 560px;
+      width: 100%;
+      padding: 80px 64px;
+      border: 1px solid #cccccc;
+      border-radius: 16px;
+    }
+
+    .icon-wrap {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: var(--green-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 28px;
+    }
+
+    .icon-inner {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon-inner svg { width: 28px; height: 28px; }
+
+    .confirm-title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 0;
+    }
+
+    .confirm-subtext {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .confirm-subtext p + p { margin-top: 32px; }
+
+    /* NAV — confirm panel only */
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 0 32px 2px;
+      height: 56px;
+      background: #121418;
+      border-bottom: 2px solid #1f202a;
+    }
+
+    .nav-logo {
+      height: 14px;
+      width: 128.5px;
+      display: block;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+
+    .nav-sep {
+      font-size: 16px;
+      color: #797888;
+      font-family: 'Satoshi', sans-serif;
+      line-height: 1;
+    }
+
+    .nav-product {
+      font-family: 'Newsreader', Georgia, serif;
+      font-style: italic;
+      font-size: 24px;
+      color: #ffffff;
+      line-height: 1;
+    }
+
+    /* ─────────────────────────────────────────────
+       PANEL 2 — LEADERBOARD
+    ───────────────────────────────────────────── */
+    #panel-leaderboard {
+      display: none;
+      min-height: 100vh;
+      background-color: #d6dfe3;
+      position: relative;
+    }
+
+    #lb-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('../../Downloads/June BG 1920 1.webp');
+      background-size: 100vw auto;
+      background-repeat: no-repeat;
+      background-position: top left;
+      background-color: #d6dfe3;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    #panel-leaderboard main {
+      position: relative;
+      z-index: 1;
+    }
+
+    main {
+      max-width: 768px;
+      margin: 0 auto;
+      padding: 56px 0 100px;
+    }
+
+    /* ─────────────────────────────────────────────
+       LEADERBOARD HERO — branding + title + badge
+    ───────────────────────────────────────────── */
+    .lb-hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .lb-branding {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .lb-brand-logo {
+      height: 12px;
+      width: 111px;
+      display: block;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+
+    .lb-brand-sep {
+      width: 1px;
+      height: 19px;
+      background: #b3b3b3;
+      flex-shrink: 0;
+    }
+
+    .lb-brand-name {
+      font-family: 'Newsreader', Georgia, serif;
+      font-style: italic;
+      font-size: 24px;
+      color: #121418;
+      line-height: 1;
+    }
+
+    .page-title {
+      font-family: 'Newsreader', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 64px;
+      letter-spacing: 0;
+      text-align: center;
+      color: #111;
+      margin-bottom: 8px;
+      line-height: 1.1;
+    }
+
+    .final-subtitle {
+      display: none;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ─────────────────────────────────────────────
+       LIVE EVAL BANNER
+    ───────────────────────────────────────────── */
+    #eval-banner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #0d0d0d;
+      color: #20d761;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 13px;
+      border-radius: 100px;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #20d761;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.8); }
+    }
+
+    #provisional-text {
+      display: none;
+      font-size: 13px;
+      color: var(--text-tertiary);
+      line-height: 1.65;
+      text-align: center;
+    }
+
+    /* ─────────────────────────────────────────────
+       TIMELINE
+    ───────────────────────────────────────────── */
+    #timeline {
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(36.5px);
+      -webkit-backdrop-filter: blur(36.5px);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .timeline-fade { display: none; }
+    .timeline-toggle { display: none; }
+
+    .timeline-wrap {
+      display: flex;
+      align-items: flex-start;
+      max-width: 740px;
+      margin: 0 auto;
+    }
+
+    .t-milestone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .t-line {
+      height: 2px;
+      background: #cccccc;
+      flex: 1;
+      margin-top: 9px;
+      min-width: 16px;
+      transition: background 0.3s;
+    }
+
+    .t-line.completed { background: var(--green); }
+
+    .t-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #cccccc;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
+      margin-bottom: 10px;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .t-dot svg { display: none; }
+
+    .t-milestone.completed .t-dot {
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .t-milestone.completed .t-dot svg { display: block; }
+
+    .t-milestone.active .t-dot {
+      border-color: var(--green);
+      background: var(--green-light);
+      animation: ring-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes ring-pulse {
+      0%, 100% { box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.18); }
+      50%       { box-shadow: 0 0 0 9px rgba(46, 125, 50, 0.06); }
+    }
+
+    .t-milestone.active .t-dot::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      position: absolute;
+    }
+
+    .t-name {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      line-height: 1.4;
+      margin-bottom: 3px;
+      padding: 0 4px;
+    }
+
+    .t-milestone.completed .t-name,
+    .t-milestone.active .t-name { color: var(--text-primary); font-weight: 600; }
+
+    .t-date { font-size: 11px; color: var(--text-tertiary); }
+    .t-milestone.active .t-date { color: var(--green); font-weight: 600; }
+
+    /* ─────────────────────────────────────────────
+       COUNTDOWN
+    ───────────────────────────────────────────── */
+    #countdown-section {
+      display: none;
+      text-align: center;
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(36.5px);
+      -webkit-backdrop-filter: blur(36.5px);
+      border-radius: 16px;
+      padding: 40px 24px;
+    }
+
+    .countdown-headline {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+    }
+
+    .countdown-timer {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .countdown-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .countdown-value {
+      font-size: 64px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      line-height: 1;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+      min-width: 96px;
+      text-align: center;
+    }
+
+    .countdown-lbl {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-tertiary);
+      font-weight: 500;
+    }
+
+    .countdown-sep {
+      font-size: 52px;
+      font-weight: 200;
+      color: #cccccc;
+      line-height: 1.05;
+      user-select: none;
+    }
+
+    .countdown-subtext {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    /* ─────────────────────────────────────────────
+       TABLE SECTION
+    ───────────────────────────────────────────── */
+    #table-section { display: none; }
+
+    .section-heading {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    /* Frosted glass container: search + provisional + table + pagination */
+    .table-glass {
+      background: rgba(255,255,255,0.5);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .search-wrap { position: relative; }
+
+    .search-icon {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    #search-input {
+      width: 100%;
+      padding: 10px 16px 10px 38px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--text-primary);
+      outline: none;
+      background: #fff;
+      transition: border-color 0.15s;
+      font-family: 'Satoshi', sans-serif;
+    }
+
+    #search-input:focus { border-color: #aaa; }
+    #search-input::placeholder { color: var(--text-tertiary); }
+
+    /* TABLE CONTAINER */
+    .table-container {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    /* TABLE */
+    .lb-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .lb-table th {
+      text-align: left;
+      padding: 9px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      letter-spacing: 0;
+      border-bottom: 1px solid var(--border);
+      background: #f2f2f2;
+      white-space: normal;
+      vertical-align: top;
+      line-height: 1.35;
+    }
+
+    .lb-table th.r { text-align: right; }
+
+    .th-sub {
+      display: block;
+      font-size: 10px;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--text-tertiary);
+      opacity: 0.75;
+      margin-top: 2px;
+    }
+
+    .lb-table td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+      background: rgba(255,255,255,0.5);
+    }
+
+    .lb-table tbody tr:last-child td { border-bottom: none; }
+    .lb-table tbody tr:hover td { background: rgba(255,255,255,0.82); }
+
+    .td-rank { width: 56px; }
+
+    .rank-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #f0f0f0;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .td-participant {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .p-name { font-weight: 500; }
+    .p-handle { font-size: 12px; color: var(--text-tertiary); font-weight: 400; margin-top: 2px; }
+
+    .td-score {
+      text-align: right;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .td-score-sub {
+      text-align: right;
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    /* PAGINATION */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      min-height: 28px;
+    }
+
+    .pg-showing {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .pg-buttons {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .pg-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 400;
+      color: #35363f;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.1s;
+      font-family: 'Satoshi', sans-serif;
+    }
+
+    .pg-btn:hover:not(:disabled):not(.active) { background: rgba(0,0,0,0.06); }
+    .pg-btn.active { background: #f7f8fd; color: #35363f; }
+    .pg-btn:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+    .pg-nav { font-size: 16px; color: #4a4b53; }
+
+    .pg-ellipsis {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #4a4b53;
+    }
+
+    /* FAQ LINK */
+    .faq-link-wrap {
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-top: 20px;
+    }
+
+    .faq-link {
+      color: #2563eb;
+      font-weight: 400;
+      text-decoration: none;
+    }
+
+    .faq-link:hover { text-decoration: underline; }
+
+    /* ─────────────────────────────────────────────
+       PODIUM
+    ───────────────────────────────────────────── */
+    #podium { display: none; margin-bottom: 16px; width: 100%; }
+
+    .podium-wrap {
+      display: flex;
+      align-items: flex-end;
+      width: 100%;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .podium-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      backdrop-filter: blur(36.5px);
+      -webkit-backdrop-filter: blur(36.5px);
+      border-radius: 8px;
+      padding: 24px 20px 20px;
+      background: linear-gradient(180deg, #f4f4f4 0%, #e8e8e8 100%);
+    }
+
+    .podium-card.p-first {
+      flex: 1.15;
+      padding: 32px 20px 24px;
+      background: linear-gradient(180deg, #fffbe6 0%, #fff0b3 100%);
+    }
+
+    .podium-card.p-third {
+      background: linear-gradient(180deg, #fff4ec 0%, #ffdfc5 100%);
+    }
+
+    .podium-trophy {
+      width: 92px;
+      height: 92px;
+      object-fit: contain;
+      margin-bottom: 14px;
+    }
+
+    .podium-card.p-first .podium-trophy {
+      width: 115px;
+      height: 115px;
+    }
+
+    .podium-rank-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+
+    .p-first .podium-rank-label  { background: #f5d668; color: #7a5000; }
+    .p-second .podium-rank-label { background: #c8c8c8; color: #4a4a4a; }
+    .p-third .podium-rank-label  { background: #f5b98a; color: #7a3200; }
+
+    .podium-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .podium-handle {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-tertiary);
+      margin-bottom: 8px;
+    }
+
+    .podium-score {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .podium-card.p-first .podium-score {
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    /* ─────────────────────────────────────────────
+       STATE VISIBILITY (data-state on panel)
+    ───────────────────────────────────────────── */
+
+    /* Countdown: only state 1 */
+    #panel-leaderboard[data-state="1"] #countdown-section { display: block; }
+
+    /* Table: states 2–5 */
+    #panel-leaderboard[data-state="2"] #table-section,
+    #panel-leaderboard[data-state="3"] #table-section,
+    #panel-leaderboard[data-state="4"] #table-section,
+    #panel-leaderboard[data-state="5"] #table-section { display: block; }
+
+    /* Provisional text: states 2–4 only */
+    #panel-leaderboard[data-state="2"] #provisional-text,
+    #panel-leaderboard[data-state="3"] #provisional-text,
+    #panel-leaderboard[data-state="4"] #provisional-text { display: block; }
+
+    /* State 5 overrides */
+    #panel-leaderboard[data-state="5"] #eval-banner    { display: none; }
+    #panel-leaderboard[data-state="5"] #timeline       { display: none; }
+    #panel-leaderboard[data-state="5"] .final-subtitle { display: block; }
+    #panel-leaderboard[data-state="5"] #podium         { display: block; }
+    #panel-leaderboard[data-state="5"] .section-heading { display: block; }
+
+    /* ─────────────────────────────────────────────
+       DEV SELECTOR
+    ───────────────────────────────────────────── */
+    #dev-selector {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 14px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.09);
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 100;
+    }
+
+    #dev-selector label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-tertiary);
+    }
+
+    #state-select {
+      font-size: 13px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--text-primary);
+      cursor: pointer;
+      outline: none;
+      min-width: 210px;
+    }
+
+    #state-select:focus { border-color: #aaa; }
+
+    /* Shared button */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #121418;
+      color: #ffffff;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 24px;
+      padding: 12px 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      transition: background 0.15s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover { background: #1e2026; }
+
+    /* ─────────────────────────────────────────────
+       MOBILE TABLE — expandable rows
+    ───────────────────────────────────────────── */
+    .col-chevron { display: none; } /* visible only on mobile */
+
+    .chevron-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: background 0.15s;
+    }
+    .chevron-btn:hover { background: rgba(0,0,0,0.06); }
+    .chevron-btn svg { transition: transform 0.2s ease; display: block; }
+    .chevron-btn.expanded svg { transform: rotate(180deg); }
+
+    .detail-row td {
+      padding: 0 14px 12px;
+      background: rgba(244,244,244,0.8);
+      border-bottom: 1px solid var(--border);
+    }
+    .score-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 6px 0 2px;
+    }
+    .score-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #ebebeb;
+      border-radius: 100px;
+      padding: 4px 11px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+    .score-pill strong { color: var(--text-primary); font-weight: 600; }
+    .score-pill-total { font-weight: 600; color: var(--text-primary); border-color: #d1d5db; background: #f3f4f6; }
+
+    /* ─────────────────────────────────────────────
+       RESPONSIVE — ≤1199px (tablet)
+    ───────────────────────────────────────────── */
+    @media (max-width: 1199px) {
+      main { padding: 56px 32px 100px; }
+      #lb-bg { background-size: cover; background-position: center top; }
+    }
+
+    /* ─────────────────────────────────────────────
+       RESPONSIVE — ≤767px (mobile)
+    ───────────────────────────────────────────── */
+    @media (max-width: 767px) {
+      main { padding: 40px 16px 80px; }
+      #lb-bg { background-size: cover; background-position: center top; }
+
+      .page-title { font-size: 44px; }
+      #search-input { font-size: 16px; } /* prevent iOS auto-zoom */
+
+      /* — Timeline: collapsed by default, expand on tap — */
+      #timeline { padding: 16px 20px 12px; }
+
+      .timeline-wrap {
+        flex-direction: column;
+        max-height: 260px;
+        overflow-y: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding-left: 10px; /* room for the ring-pulse box-shadow */
+      }
+      .timeline-wrap::-webkit-scrollbar { display: none; }
+
+      .t-milestone {
+        display: grid;
+        grid-template-columns: 20px 1fr;
+        column-gap: 12px;
+        align-items: center;
+        text-align: left;
+        flex: none;
+        width: 100%;
+        min-width: 0;
+        padding: 4px 0;
+      }
+      .t-dot {
+        grid-row: 1 / 3;
+        grid-column: 1;
+        margin-bottom: 0;
+        align-self: center;
+        justify-self: center;
+      }
+      .t-name {
+        grid-row: 1;
+        grid-column: 2;
+        padding: 0;
+        margin-bottom: 2px;
+        line-height: 1.3;
+      }
+      .t-date {
+        grid-row: 2;
+        grid-column: 2;
+      }
+      .t-line {
+        width: 2px;
+        min-width: 2px;
+        height: 16px;
+        flex: none;
+        align-self: flex-start;
+        margin: 0 0 0 9px;
+        background: #cccccc;
+      }
+      .t-line.completed { background: var(--green); }
+
+      /* Collapsed: hide everything except the active step */
+      #timeline[data-collapsed="true"] .t-milestone:not(.active) { display: none; }
+      #timeline[data-collapsed="true"] .t-line { display: none; }
+      #timeline[data-collapsed="true"] .timeline-fade { display: none; }
+
+      /* Toggle chevron button */
+      .timeline-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 8px 0 2px;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+      .timeline-toggle svg { transition: transform 0.25s ease; }
+      #timeline:not([data-collapsed="true"]) .timeline-toggle svg { transform: rotate(180deg); }
+
+      /* — Podium: stays horizontal, compressed — */
+      .podium-wrap { gap: 6px; }
+      .podium-card { padding: 14px 10px 12px; }
+      .podium-card.p-first { padding: 18px 10px 14px; }
+
+      .podium-trophy { width: 56px; height: 56px; margin-bottom: 10px; }
+      .podium-card.p-first .podium-trophy { width: 70px; height: 70px; }
+
+      .podium-rank-label { font-size: 9px; padding: 2px 7px; margin-bottom: 7px; letter-spacing: 0.4px; }
+      .podium-name { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+      .podium-score { font-size: 12px; }
+
+      /* — Table: collapse sub-score columns, show chevron — */
+      .lb-table .col-sub-score { display: none; }
+      .lb-table .col-chevron { display: table-cell; width: 44px; text-align: center; padding: 6px 8px; }
+
+      /* — Countdown — */
+      .countdown-value { font-size: 40px; min-width: 52px; }
+      .countdown-sep { font-size: 36px; }
+    }
+
+    /* ─────────────────────────────────────────────
+       RESPONSIVE — ≤479px (small phone)
+    ───────────────────────────────────────────── */
+    @media (max-width: 479px) {
+      main { padding: 32px 12px 64px; }
+      .page-title { font-size: 32px; }
+      .lb-brand-name { font-size: 20px; }
+
+      .countdown-value { font-size: 32px; min-width: 52px; }
+      .countdown-sep { font-size: 28px; }
+
+      .podium-wrap { gap: 4px; }
+      .podium-card { padding: 12px 8px 10px; }
+      .podium-card.p-first { padding: 15px 8px 12px; }
+      .podium-trophy { width: 44px; height: 44px; }
+      .podium-card.p-first .podium-trophy { width: 55px; height: 55px; }
+      .podium-name { font-size: 11px; }
+      .podium-score { font-size: 11px; }
+      .podium-rank-label { font-size: 8px; padding: 2px 6px; }
+
+      .pg-btn { width: 24px; height: 24px; font-size: 12px; }
+    }
+
+    /* ─────────────────────────────────────────────
+       PANEL 0 — AI INTERVIEW SCREEN
+    ───────────────────────────────────────────── */
+    #panel-interview {
+      min-height: 100vh;
+      background: #070707;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .iv-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 11px;
+      height: 54px;
+      background: #070707;
+      border-bottom: 1px solid #333333;
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
+    }
+
+    .iv-nav-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .iv-sep {
+      font-size: 16px;
+      color: #797888;
+      font-family: 'Satoshi', sans-serif;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .iv-product {
+      font-family: 'Newsreader', Georgia, serif;
+      font-style: italic;
+      font-size: 24px;
+      color: #ffffff;
+      line-height: 1;
+    }
+
+    .iv-timer {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(20, 103, 17, 0.3);
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+
+    .iv-timer svg { flex-shrink: 0; }
+
+    .iv-timer span {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: #20d761;
+      white-space: nowrap;
+    }
+
+    .btn-end-submit {
+      background: #ff516b;
+      color: #121418;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 8px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      line-height: 24px;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    .btn-end-submit:hover { background: #ff3352; }
+
+    .iv-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      padding-bottom: 80px;
+    }
+
+    .iv-video-card {
+      width: 511px;
+      max-width: calc(100vw - 32px);
+      aspect-ratio: 511 / 313;
+      background: #1f202a;
+      border: 1px solid #333333;
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .iv-video-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .iv-waveform {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: max(100vw, 1440px);
+      height: 171px;
+      mix-blend-mode: lighten;
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .iv-waveform img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .iv-controls {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid #393939;
+      border-radius: 12px;
+      padding: 7px;
+      display: flex;
+      gap: 8px;
+      z-index: 2;
+    }
+
+    .iv-ctrl-btn {
+      width: 40px;
+      height: 38px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid #393939;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+      transition: background 0.15s;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════
+       PANEL 0 — AI INTERVIEW SCREEN
+  ══════════════════════════════════════════ -->
+  <div id="panel-interview">
+
+    <!-- Top nav -->
+    <nav class="iv-nav">
+      <div class="iv-nav-left">
+        <img class="nav-logo" src="assets/logo-hackerrank-white.svg" alt="HackerRank">
+        <span class="iv-sep">|</span>
+        <span class="iv-product">Orchestrate</span>
+        <span class="iv-sep">|</span>
+        <div class="iv-timer">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8.5" r="5.5" stroke="#20d761" stroke-width="1.3"/>
+            <path d="M8 6v2.5l1.5 1.5" stroke="#20d761" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>29 minutes</span>
+        </div>
+      </div>
+      <div>
+        <button class="btn-end-submit" id="end-submit-btn">End &amp; Submit</button>
+      </div>
+    </nav>
+
+    <!-- Centered video card -->
+    <div class="iv-body">
+      <div class="iv-video-card">
+        <img src="https://www.figma.com/api/mcp/asset/96215586-74ee-4129-9637-9b4c5dc2a30f" alt="AI Interviewer">
+      </div>
+    </div>
+
+    <!-- Bottom waveform -->
+    <div class="iv-waveform">
+      <img src="https://www.figma.com/api/mcp/asset/742033df-7398-4efe-bd67-cb894452d17b" alt="">
+    </div>
+
+    <!-- Controls bar: mic / camera / chat -->
+    <div class="iv-controls">
+      <div class="iv-ctrl-btn" title="Microphone">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <rect x="7" y="2" width="6" height="10" rx="3" stroke="white" stroke-width="1.5"/>
+          <path d="M4 10a6 6 0 0012 0" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="10" y1="16" x2="10" y2="18" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="iv-ctrl-btn" title="Camera">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <rect x="2" y="6" width="12" height="9" rx="2" stroke="white" stroke-width="1.5"/>
+          <path d="M14 9.5l4-2.5v6l-4-2.5" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="iv-ctrl-btn" title="Chat">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v9a1 1 0 01-1 1H7l-4 3V4z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PANEL 1 — INTERVIEW COMPLETE
+  ══════════════════════════════════════════ -->
+  <div id="panel-confirm" style="display:none">
+    <nav>
+      <img class="nav-logo" src="assets/logo-hackerrank-white.svg" alt="HackerRank">
+      <span class="nav-sep">|</span>
+      <span class="nav-product">Orchestrate</span>
+    </nav>
+    <div class="confirm-body">
+      <div class="confirm-inner">
+        <div class="icon-wrap">
+          <div class="icon-inner">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <h1 class="confirm-title">Interview Completed</h1>
+        <div class="confirm-subtext">
+          <p>Your submission and AI Judge interview have been received.</p>
+          <p>Evaluation is underway. Follow the leaderboard to see how your ranking changes as each evaluation stage is completed.</p>
+        </div>
+        <button class="btn-primary" id="view-lb-btn">View Leaderboard</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PANEL 2 — LEADERBOARD
+  ══════════════════════════════════════════ -->
+  <div id="panel-leaderboard" data-state="1">
+    <div id="lb-bg"></div>
+
+    <main>
+
+      <!-- Hero: inline branding + title + live badge -->
+      <div class="lb-hero">
+        <div class="lb-branding">
+          <img class="lb-brand-logo" src="../../Downloads/Logo - Emblem2.svg" alt="HackerRank">
+          <div class="lb-brand-sep"></div>
+          <span class="lb-brand-name">Orchestrate</span>
+        </div>
+
+        <h1 class="page-title">Leaderboard</h1>
+        <p class="final-subtitle">Final Results</p>
+
+        <!-- LIVE EVAL BANNER — hidden in state 5 -->
+        <div id="eval-banner">
+          <div class="live-badge">
+            <span class="pulse-dot"></span>
+            Live evaluation in progress
+          </div>
+        </div>
+      </div>
+
+      <!-- TIMELINE — hidden in state 5 -->
+      <div id="timeline" data-collapsed="true">
+        <div class="timeline-wrap">
+          <div class="t-milestone" id="tm-1">
+            <div class="t-dot">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M1.5 5.5l2 2 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="t-name">Chat transcript<br>evaluation</div>
+            <div class="t-date">Jun 23</div>
+          </div>
+          <div class="t-line" id="tl-1"></div>
+          <div class="t-milestone" id="tm-2">
+            <div class="t-dot">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M1.5 5.5l2 2 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="t-name">Interview<br>evaluation</div>
+            <div class="t-date">Jun 24</div>
+          </div>
+          <div class="t-line" id="tl-2"></div>
+          <div class="t-milestone" id="tm-3">
+            <div class="t-dot">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M1.5 5.5l2 2 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="t-name">Output<br>evaluation</div>
+            <div class="t-date">Jun 25</div>
+          </div>
+          <div class="t-line" id="tl-3"></div>
+          <div class="t-milestone" id="tm-4">
+            <div class="t-dot">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M1.5 5.5l2 2 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="t-name">Technical review<br>&amp; final results</div>
+            <div class="t-date">Jun 26</div>
+          </div>
+        </div>
+        <div class="timeline-fade"></div>
+        <button class="timeline-toggle" id="timeline-toggle" onclick="toggleTimeline()" aria-label="Expand timeline">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6l4 4 4-4" stroke="#737373" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- COUNTDOWN — state 1 only -->
+      <div id="countdown-section">
+        <p class="countdown-headline">First evaluation results release in</p>
+        <div class="countdown-timer">
+          <div class="countdown-unit">
+            <div class="countdown-value" id="cd-days">00</div>
+            <div class="countdown-lbl">Days</div>
+          </div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-unit">
+            <div class="countdown-value" id="cd-hours">00</div>
+            <div class="countdown-lbl">Hours</div>
+          </div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-unit">
+            <div class="countdown-value" id="cd-minutes">00</div>
+            <div class="countdown-lbl">Minutes</div>
+          </div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-unit">
+            <div class="countdown-value" id="cd-seconds">00</div>
+            <div class="countdown-lbl">Seconds</div>
+          </div>
+        </div>
+        <p class="countdown-subtext">Chat transcript evaluation results will be released on Tuesday, Jun 23.</p>
+      </div>
+
+      <!-- TABLE SECTION — states 2–5 -->
+      <div id="table-section">
+
+        <!-- Podium — state 5 only -->
+        <div id="podium">
+          <div class="podium-wrap" id="podium-wrap"></div>
+        </div>
+
+        <!-- "All Rankings" heading — state 5 only -->
+        <div class="section-heading">All Rankings</div>
+
+        <!-- Frosted glass: search + provisional + table + pagination -->
+        <div class="table-glass">
+
+          <!-- Provisional subtext — states 2–4 only -->
+          <p id="provisional-text">Rankings may change as new evaluation stages are completed and will remain provisional until final results are announced.</p>
+
+          <div class="search-wrap">
+            <span class="search-icon">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                <circle cx="6.5" cy="6.5" r="4.5" stroke="#737373" stroke-width="1.5"/>
+                <path d="M10 10l3.5 3.5" stroke="#737373" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <input type="text" id="search-input" placeholder="Search participants…">
+          </div>
+
+          <div class="table-container">
+            <table class="lb-table">
+              <thead id="table-head"></thead>
+              <tbody id="table-body"></tbody>
+            </table>
+          </div>
+
+          <div class="pagination" id="pagination"></div>
+
+        </div>
+
+        <p class="faq-link-wrap">Have questions? <a class="faq-link" href="https://www.hackerrank.com/hackerrank-orchestrate-june26#faq-heading" target="_blank" rel="noopener">View the FAQ</a></p>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- DEV STATE SELECTOR -->
+  <div id="dev-selector">
+    <label>Dev: Switch State</label>
+    <select id="state-select">
+      <option value="1">1 — Initial Countdown</option>
+      <option value="2">2 — Chat Transcript Released</option>
+      <option value="3">3 — Interview Evaluation Released</option>
+      <option value="4">4 — Output Evaluation Released</option>
+      <option value="5">5 — Final Results Released</option>
+    </select>
+  </div>
+
+  <script>
+    // ─────────────────────────────────────────────
+    // MOCK DATA
+    // ─────────────────────────────────────────────
+    const PARTICIPANTS = [
+      { id:  1, name: 'Alice Chen',     handle: 'alicechen_dev',    initials: 'AC', chat: 92, interview: 78, output: 95, technical: 88 },
+      { id:  2, name: 'Ben Okafor',     handle: 'ben.okafor',       initials: 'BO', chat: 85, interview: 94, output: 88, technical: 91 },
+      { id:  3, name: 'Chloe Dupont',   handle: 'chloe_dupont',     initials: 'CD', chat: 78, interview: 88, output: 91, technical: 79 },
+      { id:  4, name: 'Diego Reyes',    handle: 'diegoreyes42',     initials: 'DR', chat: 95, interview: 72, output: 82, technical: 74 },
+      { id:  5, name: 'Eva Kowalski',   handle: 'eva.kowalski',     initials: 'EK', chat: 88, interview: 90, output: 79, technical: 86 },
+      { id:  6, name: 'Farhan Malik',   handle: 'farhanmalik_hr',   initials: 'FM', chat: 71, interview: 96, output: 93, technical: 82 },
+      { id:  7, name: 'Grace Liu',      handle: 'graceliu99',       initials: 'GL', chat: 90, interview: 83, output: 76, technical: 77 },
+      { id:  8, name: 'Hiroshi Tanaka', handle: 'hiroshi.tanaka',   initials: 'HT', chat: 82, interview: 87, output: 88, technical: 85 },
+      { id:  9, name: 'Isabelle Roy',   handle: 'isabelleroy_',     initials: 'IR', chat: 76, interview: 91, output: 84, technical: 71 },
+      { id: 10, name: 'James Osei',     handle: 'jamesosei10',      initials: 'JO', chat: 94, interview: 69, output: 90, technical: 80 },
+      { id: 11, name: 'Kofi Mensah',    handle: 'kofimensah',       initials: 'KM', chat: 68, interview: 85, output: 94, technical: 93 },
+      { id: 12, name: 'Lena Vogel',     handle: 'lena.vogel',       initials: 'LV', chat: 87, interview: 88, output: 86, technical: 84 },
+      { id: 13, name: 'Marco Silva',    handle: 'marcosilva_dev',   initials: 'MS', chat: 79, interview: 76, output: 88, technical: 76 },
+      { id: 14, name: 'Nina Patel',     handle: 'ninapatel14',      initials: 'NP', chat: 83, interview: 93, output: 77, technical: 89 },
+      { id: 15, name: 'Omar Hassan',    handle: 'omar.hassan',      initials: 'OH', chat: 91, interview: 80, output: 83, technical: 83 },
+    ];
+
+    const PAGE_SIZE = 10;
+    let currentPage = 1;
+    let searchQuery  = '';
+    let countdownInterval = null;
+    let activeState  = 1;
+
+    // ─────────────────────────────────────────────
+    // SCORE COMPUTATION
+    // ─────────────────────────────────────────────
+    function getScore(p, state) {
+      if (state === 2) return p.chat;
+      if (state === 3) return +( p.chat * 0.4 + p.interview * 0.6 ).toFixed(1);
+      if (state === 4) return +( p.chat * 0.3 + p.interview * 0.4 + p.output * 0.3 ).toFixed(1);
+      if (state === 5) return +( p.chat * 0.25 + p.interview * 0.35 + p.output * 0.25 + p.technical * 0.15 ).toFixed(1);
+      return 0;
+    }
+
+    function getRankings(state) {
+      const sorted = [...PARTICIPANTS].sort((a, b) =>
+        getScore(b, state) - getScore(a, state) || a.id - b.id
+      );
+
+      let prev = null;
+      if (state > 2) {
+        prev = [...PARTICIPANTS].sort((a, b) =>
+          getScore(b, state - 1) - getScore(a, state - 1) || a.id - b.id
+        );
+      }
+
+      return sorted.map((p, i) => {
+        const rank = i + 1;
+        const change = prev ? (prev.findIndex(x => x.id === p.id) + 1) - rank : null;
+        return { ...p, rank, change, score: getScore(p, state) };
+      });
+    }
+
+    // ─────────────────────────────────────────────
+    // TIMELINE
+    // ─────────────────────────────────────────────
+    function renderTimeline(state) {
+      function msClass(n) {
+        if (state === 5)   return 'completed';
+        if (state > n)     return 'completed';
+        if (state === n)   return 'active';
+        return '';
+      }
+
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`tm-${i}`).className = 't-milestone ' + msClass(i);
+      }
+      for (let i = 1; i <= 3; i++) {
+        const cls = msClass(i) === 'completed' ? 't-line completed' : 't-line';
+        document.getElementById(`tl-${i}`).className = cls;
+      }
+    }
+
+    // ─────────────────────────────────────────────
+    // COUNTDOWN
+    // ─────────────────────────────────────────────
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function startCountdown() {
+      const target = new Date(2026, 5, 23); // Jun 23 2026, local midnight
+      // Prototype mock: simulate time as Jun 20 2026 11pm (when participants finish)
+      const mockNow = new Date(2026, 5, 20, 23, 0, 0).getTime();
+      let mockElapsed = 0;
+      const mockStart = Date.now();
+
+      function tick() {
+        mockElapsed = Date.now() - mockStart;
+        const diff = Math.max(0, target - (mockNow + mockElapsed));
+        document.getElementById('cd-days').textContent    = pad(Math.floor(diff / 86400000));
+        document.getElementById('cd-hours').textContent   = pad(Math.floor((diff % 86400000) / 3600000));
+        document.getElementById('cd-minutes').textContent = pad(Math.floor((diff % 3600000) / 60000));
+        document.getElementById('cd-seconds').textContent = pad(Math.floor((diff % 60000) / 1000));
+      }
+
+      tick();
+      countdownInterval = setInterval(tick, 1000);
+    }
+
+    function stopCountdown() {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+    }
+
+    // ─────────────────────────────────────────────
+    // PODIUM (state 5)
+    // ─────────────────────────────────────────────
+    function renderPodium() {
+      const [first, second, third] = getRankings(5);
+      const TROPHY_BASE = 'https://hrcdn.net/hrc/_next/static/next_assets/hackathon/trophy-';
+
+      const card = (p, cls, rank, label) => `
+        <div class="podium-card ${cls}">
+          <img class="podium-trophy" src="${TROPHY_BASE}${rank}.png" alt="${label} trophy">
+          <div class="podium-rank-label">${label}</div>
+          <div class="podium-name">${p.name}</div>
+          <div class="podium-handle">@${p.handle}</div>
+          <div class="podium-score">${p.score}</div>
+        </div>`;
+
+      // Classic podium order: 2nd | 1st | 3rd
+      document.getElementById('podium-wrap').innerHTML =
+        card(second, 'p-second', 2, '2nd Place') +
+        card(first,  'p-first',  1, '1st Place') +
+        card(third,  'p-third',  3, '3rd Place');
+    }
+
+    // ─────────────────────────────────────────────
+    // TABLE
+    // ─────────────────────────────────────────────
+    function renderTable(state) {
+      const rankings = getRankings(state);
+      const filtered = rankings.filter(p =>
+        p.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+
+      const tableRows = filtered;
+
+      const totalPages = Math.max(1, Math.ceil(tableRows.length / PAGE_SIZE));
+      if (currentPage > totalPages) currentPage = 1;
+      const rows = tableRows.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+      const showChat      = state >= 2;
+      const showInterview = state >= 3;
+      const showOutput    = state >= 4;
+      const showTech      = state === 5;
+      // Chevron on mobile when multiple sub-scores exist (state 3+)
+      const hasSubScores  = state >= 3;
+
+      const s = (t) => `<span class="th-sub">${t}</span>`;
+
+      // thead
+      let ths = `<th>Rank</th><th>Participant</th>`;
+      if (showChat)      ths += `<th class="r col-sub-score">AI fluency${s('/100')}</th>`;
+      if (showInterview) ths += `<th class="r col-sub-score">Judge interview${s('/100')}</th>`;
+      if (showOutput)    ths += `<th class="r col-sub-score">Test cases${s('/100')}</th>`;
+      if (showTech)      ths += `<th class="r col-sub-score">Technical execution${s('/100')}</th>`;
+      ths += state === 5
+        ? `<th class="r">Final score${s('/100')}</th>`
+        : `<th class="r">Total score${s('/100')}</th>`;
+      if (hasSubScores) ths += `<th class="col-chevron"></th>`;
+      document.getElementById('table-head').innerHTML = `<tr>${ths}</tr>`;
+
+      // tbody
+      document.getElementById('table-body').innerHTML = rows.map(p => {
+        let tds = `
+          <td class="td-rank"><span class="rank-circle">#${p.rank}</span></td>
+          <td><div class="td-participant"><div><span class="p-name">${p.name}</span><div class="p-handle">@${p.handle}</div></div></div></td>`;
+
+        if (showChat)      tds += `<td class="td-score-sub col-sub-score">${p.chat}</td>`;
+        if (showInterview) tds += `<td class="td-score-sub col-sub-score">${p.interview}</td>`;
+        if (showOutput)    tds += `<td class="td-score-sub col-sub-score">${p.output}</td>`;
+        if (showTech)      tds += `<td class="td-score-sub col-sub-score">${p.technical}</td>`;
+        tds += `<td class="td-score">${p.score}</td>`;
+
+        let detailRow = '';
+        if (hasSubScores) {
+          tds += `<td class="col-chevron"><button class="chevron-btn" onclick="toggleDetailRow('dr-${p.id}',this)" aria-label="Expand scores">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 6l4 4 4-4" stroke="#737373" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button></td>`;
+
+          const pills = [];
+          if (showChat)      pills.push(`<span class="score-pill">AI Fluency <strong>${p.chat}</strong></span>`);
+          if (showInterview) pills.push(`<span class="score-pill">Judge Interview <strong>${p.interview}</strong></span>`);
+          if (showOutput)    pills.push(`<span class="score-pill">Test Cases <strong>${p.output}</strong></span>`);
+          if (showTech)      pills.push(`<span class="score-pill">Technical Execution <strong>${p.technical}</strong></span>`);
+          pills.push(`<span class="score-pill score-pill-total">${state === 5 ? 'Final score' : 'Total score'} <strong>${p.score}</strong></span>`);
+
+          detailRow = `<tr class="detail-row" id="dr-${p.id}" style="display:none;">
+            <td colspan="100"><div class="score-pills">${pills.join('')}</div></td>
+          </tr>`;
+        }
+
+        return `<tr>${tds}</tr>${detailRow}`;
+      }).join('');
+
+      renderPagination(totalPages, tableRows.length);
+    }
+
+    function toggleTimeline() {
+      const tl = document.getElementById('timeline');
+      tl.dataset.collapsed = tl.dataset.collapsed === 'true' ? 'false' : 'true';
+    }
+
+    function toggleDetailRow(id, btn) {
+      const row = document.getElementById(id);
+      const isOpen = row.style.display !== 'none';
+      row.style.display = isOpen ? 'none' : 'table-row';
+      btn.classList.toggle('expanded', !isOpen);
+    }
+
+    // ─────────────────────────────────────────────
+    // PAGINATION — numbered with ellipsis
+    // ─────────────────────────────────────────────
+    function getPageNumbers(current, total) {
+      if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+
+      if (current <= 5) {
+        const pages = Array.from({ length: Math.min(5, total) }, (_, i) => i + 1);
+        if (total > 6) pages.push('...');
+        if (total > 5) pages.push(total);
+        return pages;
+      }
+
+      if (current >= total - 4) {
+        const pages = [1, '...'];
+        for (let i = Math.max(total - 4, 2); i <= total; i++) pages.push(i);
+        return pages;
+      }
+
+      return [1, '...', current - 1, current, current + 1, '...', total];
+    }
+
+    function renderPagination(totalPages, totalRows) {
+      const el = document.getElementById('pagination');
+      const start = totalRows === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1;
+      const end   = Math.min(currentPage * PAGE_SIZE, totalRows);
+      const showingHtml = `<span class="pg-showing">Showing ${start}${totalRows > 0 ? `–${end}` : ''} of ${totalRows}</span>`;
+
+      if (totalPages <= 1) {
+        el.innerHTML = showingHtml;
+        return;
+      }
+
+      const pages = getPageNumbers(currentPage, totalPages);
+      let btns = `<button class="pg-btn pg-nav" ${currentPage === 1 ? 'disabled' : ''} onclick="goPage(${currentPage - 1})">‹</button>`;
+
+      pages.forEach(p => {
+        if (p === '...') {
+          btns += `<span class="pg-ellipsis">…</span>`;
+        } else {
+          btns += `<button class="pg-btn ${p === currentPage ? 'active' : ''}" onclick="goPage(${p})">${p}</button>`;
+        }
+      });
+
+      btns += `<button class="pg-btn pg-nav" ${currentPage === totalPages ? 'disabled' : ''} onclick="goPage(${currentPage + 1})">›</button>`;
+      el.innerHTML = showingHtml + `<div class="pg-buttons">${btns}</div>`;
+    }
+
+    function goPage(p) {
+      currentPage = p;
+      renderTable(activeState);
+    }
+
+    // ─────────────────────────────────────────────
+    // SET STATE
+    // ─────────────────────────────────────────────
+    function setState(state) {
+      activeState = state;
+      document.getElementById('panel-leaderboard').dataset.state = state;
+      document.getElementById('state-select').value = state;
+
+      if (state !== 1) stopCountdown();
+
+      renderTimeline(state);
+
+      if (state === 1) {
+        startCountdown();
+      } else {
+        currentPage = 1;
+        renderTable(state);
+        if (state === 5) renderPodium();
+      }
+    }
+
+    // ─────────────────────────────────────────────
+    // EVENT LISTENERS
+    // ─────────────────────────────────────────────
+    document.getElementById('end-submit-btn').addEventListener('click', () => {
+      document.getElementById('panel-interview').style.display = 'none';
+      document.getElementById('panel-confirm').style.display = 'flex';
+    });
+
+    document.getElementById('view-lb-btn').addEventListener('click', () => {
+      document.getElementById('panel-confirm').style.display = 'none';
+      document.getElementById('panel-leaderboard').style.display = 'block';
+      document.getElementById('dev-selector').style.display = 'flex';
+    });
+
+    document.getElementById('state-select').addEventListener('change', function () {
+      setState(Number(this.value));
+    });
+
+    document.getElementById('search-input').addEventListener('input', function () {
+      searchQuery = this.value;
+      currentPage = 1;
+      renderTable(activeState);
+    });
+
+    // ─────────────────────────────────────────────
+    // INIT
+    // ─────────────────────────────────────────────
+    setState(1);
+  </script>
+</body>
+</html>
