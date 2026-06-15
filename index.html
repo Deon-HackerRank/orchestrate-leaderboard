@@ -1244,9 +1244,9 @@
         <h1 class="confirm-title">Interview Completed</h1>
         <div class="confirm-subtext">
           <p>Your submission and AI Judge interview have been received.</p>
-          <p>Evaluation is underway. Follow the leaderboard to see how your ranking changes as each evaluation stage is completed.</p>
+          <p>Evaluation is underway. Follow the Leaderboard to see how your ranking changes as each evaluation stage is completed.</p>
         </div>
-        <button class="btn-primary" id="view-lb-btn">View Leaderboard</button>
+        <button class="btn-primary" id="view-lb-btn">Follow the Leaderboard</button>
       </div>
     </div>
   </div>
@@ -1419,21 +1419,21 @@
     // MOCK DATA
     // ─────────────────────────────────────────────
     const PARTICIPANTS = [
-      { id:  1, name: 'Alice Chen',     handle: 'alicechen_dev',    initials: 'AC', chat: 92, interview: 78, output: 95, technical: 88 },
-      { id:  2, name: 'Ben Okafor',     handle: 'ben.okafor',       initials: 'BO', chat: 85, interview: 94, output: 88, technical: 91 },
-      { id:  3, name: 'Chloe Dupont',   handle: 'chloe_dupont',     initials: 'CD', chat: 78, interview: 88, output: 91, technical: 79 },
-      { id:  4, name: 'Diego Reyes',    handle: 'diegoreyes42',     initials: 'DR', chat: 95, interview: 72, output: 82, technical: 74 },
-      { id:  5, name: 'Eva Kowalski',   handle: 'eva.kowalski',     initials: 'EK', chat: 88, interview: 90, output: 79, technical: 86 },
-      { id:  6, name: 'Farhan Malik',   handle: 'farhanmalik_hr',   initials: 'FM', chat: 71, interview: 96, output: 93, technical: 82 },
-      { id:  7, name: 'Grace Liu',      handle: 'graceliu99',       initials: 'GL', chat: 90, interview: 83, output: 76, technical: 77 },
-      { id:  8, name: 'Hiroshi Tanaka', handle: 'hiroshi.tanaka',   initials: 'HT', chat: 82, interview: 87, output: 88, technical: 85 },
-      { id:  9, name: 'Isabelle Roy',   handle: 'isabelleroy_',     initials: 'IR', chat: 76, interview: 91, output: 84, technical: 71 },
-      { id: 10, name: 'James Osei',     handle: 'jamesosei10',      initials: 'JO', chat: 94, interview: 69, output: 90, technical: 80 },
-      { id: 11, name: 'Kofi Mensah',    handle: 'kofimensah',       initials: 'KM', chat: 68, interview: 85, output: 94, technical: 93 },
-      { id: 12, name: 'Lena Vogel',     handle: 'lena.vogel',       initials: 'LV', chat: 87, interview: 88, output: 86, technical: 84 },
-      { id: 13, name: 'Marco Silva',    handle: 'marcosilva_dev',   initials: 'MS', chat: 79, interview: 76, output: 88, technical: 76 },
-      { id: 14, name: 'Nina Patel',     handle: 'ninapatel14',      initials: 'NP', chat: 83, interview: 93, output: 77, technical: 89 },
-      { id: 15, name: 'Omar Hassan',    handle: 'omar.hassan',      initials: 'OH', chat: 91, interview: 80, output: 83, technical: 83 },
+      { id:  1, name: 'Alice Chen',     handle: 'alicechen_dev',    initials: 'AC', chat: 23, interview: 20, output: 24, technical: 22 },
+      { id:  2, name: 'Ben Okafor',     handle: 'ben.okafor',       initials: 'BO', chat: 21, interview: 24, output: 22, technical: 23 },
+      { id:  3, name: 'Chloe Dupont',   handle: 'chloe_dupont',     initials: 'CD', chat: 20, interview: 22, output: 23, technical: 20 },
+      { id:  4, name: 'Diego Reyes',    handle: 'diegoreyes42',     initials: 'DR', chat: 24, interview: 18, output: 21, technical: 19 },
+      { id:  5, name: 'Eva Kowalski',   handle: 'eva.kowalski',     initials: 'EK', chat: 22, interview: 23, output: 20, technical: 22 },
+      { id:  6, name: 'Farhan Malik',   handle: 'farhanmalik_hr',   initials: 'FM', chat: 18, interview: 24, output: 23, technical: 21 },
+      { id:  7, name: 'Grace Liu',      handle: 'graceliu99',       initials: 'GL', chat: 23, interview: 21, output: 19, technical: 19 },
+      { id:  8, name: 'Hiroshi Tanaka', handle: 'hiroshi.tanaka',   initials: 'HT', chat: 21, interview: 22, output: 22, technical: 21 },
+      { id:  9, name: 'Isabelle Roy',   handle: 'isabelleroy_',     initials: 'IR', chat: 19, interview: 23, output: 21, technical: 18 },
+      { id: 10, name: 'James Osei',     handle: 'jamesosei10',      initials: 'JO', chat: 24, interview: 17, output: 23, technical: 20 },
+      { id: 11, name: 'Kofi Mensah',    handle: 'kofimensah',       initials: 'KM', chat: 17, interview: 21, output: 24, technical: 23 },
+      { id: 12, name: 'Lena Vogel',     handle: 'lena.vogel',       initials: 'LV', chat: 22, interview: 22, output: 22, technical: 21 },
+      { id: 13, name: 'Marco Silva',    handle: 'marcosilva_dev',   initials: 'MS', chat: 20, interview: 19, output: 22, technical: 19 },
+      { id: 14, name: 'Nina Patel',     handle: 'ninapatel14',      initials: 'NP', chat: 21, interview: 23, output: 19, technical: 22 },
+      { id: 15, name: 'Omar Hassan',    handle: 'omar.hassan',      initials: 'OH', chat: 23, interview: 20, output: 21, technical: 21 },
     ];
 
     const PAGE_SIZE = 10;
@@ -1447,9 +1447,9 @@
     // ─────────────────────────────────────────────
     function getScore(p, state) {
       if (state === 2) return p.chat;
-      if (state === 3) return +( p.chat * 0.4 + p.interview * 0.6 ).toFixed(1);
-      if (state === 4) return +( p.chat * 0.3 + p.interview * 0.4 + p.output * 0.3 ).toFixed(1);
-      if (state === 5) return +( p.chat * 0.25 + p.interview * 0.35 + p.output * 0.25 + p.technical * 0.15 ).toFixed(1);
+      if (state === 3) return p.chat + p.interview;
+      if (state === 4) return p.chat + p.interview + p.output;
+      if (state === 5) return p.chat + p.interview + p.output + p.technical;
       return 0;
     }
 
@@ -1560,25 +1560,25 @@
       if (currentPage > totalPages) currentPage = 1;
       const rows = tableRows.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
-      const showChat      = state >= 2;
-      const showInterview = state >= 3;
-      const showOutput    = state >= 4;
-      const showTech      = state === 5;
-      // Chevron on mobile when multiple sub-scores exist (state 3+)
-      const hasSubScores  = state >= 3;
+      const activeChat      = state >= 2;
+      const activeInterview = state >= 3;
+      const activeOutput    = state >= 4;
+      const activeTech      = state === 5;
 
-      const s = (t) => `<span class="th-sub">${t}</span>`;
+      const s   = (t) => `<span class="th-sub">${t}</span>`;
+      const thC = () => 'r col-sub-score';
+      const tdC = () => 'td-score-sub col-sub-score';
 
       // thead
       let ths = `<th>Rank</th><th>Participant</th>`;
-      if (showChat)      ths += `<th class="r col-sub-score">AI fluency${s('/100')}</th>`;
-      if (showInterview) ths += `<th class="r col-sub-score">Judge interview${s('/100')}</th>`;
-      if (showOutput)    ths += `<th class="r col-sub-score">Test cases${s('/100')}</th>`;
-      if (showTech)      ths += `<th class="r col-sub-score">Technical execution${s('/100')}</th>`;
+      ths += `<th class="${thC(activeChat)}">AI fluency${s('/25')}</th>`;
+      ths += `<th class="${thC(activeInterview)}">Judge interview${s('/25')}</th>`;
+      ths += `<th class="${thC(activeOutput)}">Test cases${s('/25')}</th>`;
+      ths += `<th class="${thC(activeTech)}">Technical execution${s('/25')}</th>`;
       ths += state === 5
         ? `<th class="r">Final score${s('/100')}</th>`
-        : `<th class="r">Total score${s('/100')}</th>`;
-      if (hasSubScores) ths += `<th class="col-chevron"></th>`;
+        : `<th class="r">Running total${s('/100')}</th>`;
+      ths += `<th class="col-chevron"></th>`;
       document.getElementById('table-head').innerHTML = `<tr>${ths}</tr>`;
 
       // tbody
@@ -1587,31 +1587,29 @@
           <td class="td-rank"><span class="rank-circle">#${p.rank}</span></td>
           <td><div class="td-participant"><div><span class="p-name">${p.name}</span><div class="p-handle">@${p.handle}</div></div></div></td>`;
 
-        if (showChat)      tds += `<td class="td-score-sub col-sub-score">${p.chat}</td>`;
-        if (showInterview) tds += `<td class="td-score-sub col-sub-score">${p.interview}</td>`;
-        if (showOutput)    tds += `<td class="td-score-sub col-sub-score">${p.output}</td>`;
-        if (showTech)      tds += `<td class="td-score-sub col-sub-score">${p.technical}</td>`;
-        tds += `<td class="td-score">${p.score}</td>`;
+        tds += `<td class="${tdC(activeChat)}">${activeChat ? p.chat : '—'}</td>`;
+        tds += `<td class="${tdC(activeInterview)}">${activeInterview ? p.interview : '—'}</td>`;
+        tds += `<td class="${tdC(activeOutput)}">${activeOutput ? p.output : '—'}</td>`;
+        tds += `<td class="${tdC(activeTech)}">${activeTech ? p.technical : '—'}</td>`;
+        tds += `<td class="td-score">${activeChat ? p.score : '—'}</td>`;
 
-        let detailRow = '';
-        if (hasSubScores) {
-          tds += `<td class="col-chevron"><button class="chevron-btn" onclick="toggleDetailRow('dr-${p.id}',this)" aria-label="Expand scores">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M4 6l4 4 4-4" stroke="#737373" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button></td>`;
+        tds += `<td class="col-chevron"><button class="chevron-btn" onclick="toggleDetailRow('dr-${p.id}',this)" aria-label="Expand scores">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6l4 4 4-4" stroke="#737373" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button></td>`;
 
-          const pills = [];
-          if (showChat)      pills.push(`<span class="score-pill">AI Fluency <strong>${p.chat}</strong></span>`);
-          if (showInterview) pills.push(`<span class="score-pill">Judge Interview <strong>${p.interview}</strong></span>`);
-          if (showOutput)    pills.push(`<span class="score-pill">Test Cases <strong>${p.output}</strong></span>`);
-          if (showTech)      pills.push(`<span class="score-pill">Technical Execution <strong>${p.technical}</strong></span>`);
-          pills.push(`<span class="score-pill score-pill-total">${state === 5 ? 'Final score' : 'Total score'} <strong>${p.score}</strong></span>`);
+        const pills = [
+          `<span class="score-pill${activeChat ? '' : ' score-pill'}">AI fluency <strong>${activeChat ? p.chat : '—'}</strong></span>`,
+          `<span class="score-pill${activeInterview ? '' : ' score-pill'}">Judge interview <strong>${activeInterview ? p.interview : '—'}</strong></span>`,
+          `<span class="score-pill${activeOutput ? '' : ' score-pill'}">Test cases <strong>${activeOutput ? p.output : '—'}</strong></span>`,
+          `<span class="score-pill${activeTech ? '' : ' score-pill'}">Technical execution <strong>${activeTech ? p.technical : '—'}</strong></span>`,
+          `<span class="score-pill score-pill-total">${state === 5 ? 'Final score' : 'Running total'} <strong>${activeChat ? p.score : '—'}</strong></span>`,
+        ];
 
-          detailRow = `<tr class="detail-row" id="dr-${p.id}" style="display:none;">
-            <td colspan="100"><div class="score-pills">${pills.join('')}</div></td>
-          </tr>`;
-        }
+        const detailRow = `<tr class="detail-row" id="dr-${p.id}" style="display:none;">
+          <td colspan="100"><div class="score-pills">${pills.join('')}</div></td>
+        </tr>`;
 
         return `<tr>${tds}</tr>${detailRow}`;
       }).join('');
