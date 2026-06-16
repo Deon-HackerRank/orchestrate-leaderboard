@@ -886,9 +886,11 @@
       #search-input { font-size: 16px; } /* prevent iOS auto-zoom */
 
       /* — Timeline: collapsed by default, expand on tap — */
-      #timeline { padding: 16px 20px 12px; }
+      #timeline { padding: 16px 20px; display: flex; flex-direction: row; align-items: center; gap: 8px; }
 
       .timeline-wrap {
+        flex: 1;
+        min-width: 0;
         flex-direction: column;
         max-height: 260px;
         overflow-y: auto;
@@ -897,6 +899,7 @@
         padding-left: 10px; /* room for the ring-pulse box-shadow */
       }
       .timeline-wrap::-webkit-scrollbar { display: none; }
+      .timeline-fade { display: none !important; }
 
       .t-milestone {
         display: grid;
@@ -943,18 +946,21 @@
       #timeline[data-collapsed="true"] .t-line { display: none; }
       #timeline[data-collapsed="true"] .timeline-fade { display: none; }
 
-      /* Toggle chevron button */
+      /* Toggle chevron button — right side */
       .timeline-toggle {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 100%;
-        padding: 8px 0 2px;
+        flex-shrink: 0;
+        width: auto;
+        padding: 8px;
         background: none;
         border: none;
         cursor: pointer;
+        align-self: center;
       }
       .timeline-toggle svg { transition: transform 0.25s ease; }
+      #timeline:not([data-collapsed="true"]) .timeline-toggle { align-self: flex-start; }
       #timeline:not([data-collapsed="true"]) .timeline-toggle svg { transform: rotate(180deg); }
 
       /* — Podium: stays horizontal, compressed — */
@@ -1288,7 +1294,7 @@
                 <path d="M1.5 5.5l2 2 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
-            <div class="t-name">Chat transcript<br>evaluation</div>
+            <div class="t-name">Chat transcript evaluation</div>
             <div class="t-date">Jun 23</div>
           </div>
           <div class="t-line" id="tl-1"></div>
@@ -1298,7 +1304,7 @@
                 <path d="M1.5 5.5l2 2 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
-            <div class="t-name">Interview<br>evaluation</div>
+            <div class="t-name">Interview evaluation</div>
             <div class="t-date">Jun 24</div>
           </div>
           <div class="t-line" id="tl-2"></div>
@@ -1308,7 +1314,7 @@
                 <path d="M1.5 5.5l2 2 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
-            <div class="t-name">Output<br>evaluation</div>
+            <div class="t-name">Output evaluation</div>
             <div class="t-date">Jun 25</div>
           </div>
           <div class="t-line" id="tl-3"></div>
@@ -1318,7 +1324,7 @@
                 <path d="M1.5 5.5l2 2 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
-            <div class="t-name">Technical review<br>&amp; final results</div>
+            <div class="t-name">Technical review &amp; final results</div>
             <div class="t-date">Jun 26</div>
           </div>
         </div>
