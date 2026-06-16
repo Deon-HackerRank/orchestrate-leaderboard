@@ -865,6 +865,8 @@
       white-space: nowrap;
     }
     .score-pill strong { color: var(--text-primary); font-weight: 600; }
+    .score-pill .pill-dash { color: #c4c4c4; font-weight: 400; }
+    .score-pill .pill-max { color: var(--text-tertiary); font-size: 10px; font-weight: 400; }
     .score-pill-total { font-weight: 600; color: var(--text-primary); border-color: #d1d5db; background: #f3f4f6; }
 
     /* ─────────────────────────────────────────────
@@ -1605,12 +1607,14 @@
           </svg>
         </button></td>`;
 
+        const pillVal = (active, val) => active
+          ? `<strong>${val}</strong><span class="pill-max">/25</span>`
+          : `<strong class="pill-dash">—</strong>`;
         const pills = [
-          `<span class="score-pill${activeChat ? '' : ' score-pill'}">AI fluency <strong>${activeChat ? p.chat : '—'}</strong></span>`,
-          `<span class="score-pill${activeInterview ? '' : ' score-pill'}">Judge interview <strong>${activeInterview ? p.interview : '—'}</strong></span>`,
-          `<span class="score-pill${activeOutput ? '' : ' score-pill'}">Test cases <strong>${activeOutput ? p.output : '—'}</strong></span>`,
-          `<span class="score-pill${activeTech ? '' : ' score-pill'}">Technical execution <strong>${activeTech ? p.technical : '—'}</strong></span>`,
-          `<span class="score-pill score-pill-total">${state === 5 ? 'Final score' : 'Running total'} <strong>${activeChat ? p.score : '—'}</strong></span>`,
+          `<span class="score-pill">AI fluency ${pillVal(activeChat, p.chat)}</span>`,
+          `<span class="score-pill">Judge interview ${pillVal(activeInterview, p.interview)}</span>`,
+          `<span class="score-pill">Test cases ${pillVal(activeOutput, p.output)}</span>`,
+          `<span class="score-pill">Technical execution ${pillVal(activeTech, p.technical)}</span>`,
         ];
 
         const detailRow = `<tr class="detail-row" id="dr-${p.id}" style="display:none;">
