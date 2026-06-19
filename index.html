@@ -208,6 +208,7 @@
       flex-shrink: 0;
     }
     .lb-login-btn:hover { background: rgba(18, 20, 24, 0.06); }
+    .lb-login-icon { display: none; }
 
     .lb-branding {
       display: flex;
@@ -905,6 +906,9 @@
       main { padding: 56px 32px 100px; }
       #lb-bg { background-size: cover; background-position: center top; }
       .th-sub { display: block; margin-left: 0; margin-top: 2px; }
+      .lb-login-text { display: none; }
+      .lb-login-icon { display: block; }
+      .lb-login-btn { padding: 8px; }
     }
 
     /* ─────────────────────────────────────────────
@@ -1351,7 +1355,12 @@
             <span class="lb-brand-name">Orchestrate</span>
           </div>
           <div class="lb-topbar-right">
-            <a href="#" class="lb-login-btn">Log in to HRC</a>
+            <a href="#" class="lb-login-btn">
+              <svg class="lb-login-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13 3h4a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-4M9 14l4-4-4-4M13 10H3" stroke="#121418" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="lb-login-text">Log in to HRC</span>
+            </a>
           </div>
         </div>
 
