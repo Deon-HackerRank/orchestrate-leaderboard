@@ -178,6 +178,28 @@
       margin-bottom: 32px;
     }
 
+    .lb-login-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      z-index: 2;
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 24px;
+      color: #121418;
+      background: none;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 32px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      transition: background 0.15s;
+    }
+    .lb-login-btn:hover { background: rgba(18, 20, 24, 0.06); }
+
     .lb-branding {
       display: flex;
       align-items: center;
@@ -1308,6 +1330,7 @@
   ══════════════════════════════════════════ -->
   <div id="panel-leaderboard" data-state="1">
     <div id="lb-bg"></div>
+    <a href="#" class="lb-login-btn">Log in to HRC</a>
 
     <main>
 
