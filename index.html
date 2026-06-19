@@ -179,11 +179,15 @@
     }
 
     .lb-topbar {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      justify-content: space-between;
       width: 100%;
       margin-bottom: 40px;
+    }
+    .lb-topbar-right {
+      display: flex;
+      justify-content: flex-end;
     }
 
     .lb-login-btn {
@@ -1340,12 +1344,15 @@
       <!-- Hero: inline branding + title + live badge -->
       <div class="lb-hero">
         <div class="lb-topbar">
+          <div></div>
           <div class="lb-branding">
             <img class="lb-brand-logo" src="assets/logo-emblem.svg" alt="HackerRank">
             <div class="lb-brand-sep"></div>
             <span class="lb-brand-name">Orchestrate</span>
           </div>
-          <a href="#" class="lb-login-btn">Log in to HRC</a>
+          <div class="lb-topbar-right">
+            <a href="#" class="lb-login-btn">Log in to HRC</a>
+          </div>
         </div>
 
         <h1 class="page-title">Leaderboard</h1>
