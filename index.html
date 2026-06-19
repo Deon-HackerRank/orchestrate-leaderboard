@@ -178,11 +178,15 @@
       margin-bottom: 32px;
     }
 
+    .lb-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+
     .lb-login-btn {
-      position: absolute;
-      top: 24px;
-      right: 24px;
-      z-index: 2;
       font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
       font-weight: 700;
       font-size: 14px;
@@ -197,6 +201,7 @@
       display: inline-flex;
       align-items: center;
       transition: background 0.15s;
+      flex-shrink: 0;
     }
     .lb-login-btn:hover { background: rgba(18, 20, 24, 0.06); }
 
@@ -204,7 +209,6 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      margin-bottom: 40px;
     }
 
     .lb-brand-logo {
@@ -1330,16 +1334,18 @@
   ══════════════════════════════════════════ -->
   <div id="panel-leaderboard" data-state="1">
     <div id="lb-bg"></div>
-    <a href="#" class="lb-login-btn">Log in to HRC</a>
 
     <main>
 
       <!-- Hero: inline branding + title + live badge -->
       <div class="lb-hero">
-        <div class="lb-branding">
-          <img class="lb-brand-logo" src="assets/logo-emblem.svg" alt="HackerRank">
-          <div class="lb-brand-sep"></div>
-          <span class="lb-brand-name">Orchestrate</span>
+        <div class="lb-topbar">
+          <div class="lb-branding">
+            <img class="lb-brand-logo" src="assets/logo-emblem.svg" alt="HackerRank">
+            <div class="lb-brand-sep"></div>
+            <span class="lb-brand-name">Orchestrate</span>
+          </div>
+          <a href="#" class="lb-login-btn">Log in to HRC</a>
         </div>
 
         <h1 class="page-title">Leaderboard</h1>
