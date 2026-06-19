@@ -949,6 +949,13 @@
     .score-pill-total { font-weight: 600; color: var(--text-primary); border-color: #d1d5db; background: #f3f4f6; }
 
     /* ─────────────────────────────────────────────
+       STATE 1 — desktop: narrow main to 768px
+    ───────────────────────────────────────────── */
+    @media (min-width: 1200px) {
+      #panel-leaderboard[data-state="1"] main { max-width: 768px; }
+    }
+
+    /* ─────────────────────────────────────────────
        RESPONSIVE — ≤1199px (tablet)
     ───────────────────────────────────────────── */
     @media (max-width: 1199px) {
